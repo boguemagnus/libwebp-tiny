@@ -1,0 +1,6 @@
+/src/
+/out/
+/build-*/
+*.o
+*.a
+.DS_Store

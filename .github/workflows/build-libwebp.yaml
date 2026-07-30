@@ -1,0 +1,67 @@
+name: Build Precompiled libwebpdecoder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build libwebpdecoder (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux
+            os: ubuntu-latest
+          - target: windows
+            os: ubuntu-latest
+          - target: macos
+            os: macos-14
+          - target: ios
+            os: macos-14
+          - target: android
+            os: ubuntu-latest
+
+    steps:
+      - name: Checkout libwebp-tiny
+        uses: actions/checkout@v4
+
+      - name: Clone libwebp (v1.5.0)
+        run: git clone --depth 1 --branch v1.5.0 https://github.com/webmproject/libwebp.git src
+
+      - name: Setup Windows Cross-Compiler
+        if: matrix.target == 'windows'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 cmake
+
+      - name: Setup Android NDK
+        if: matrix.target == 'android'
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r26d
+
+      - name: Install cmake (Linux hosts)
+        if: matrix.target == 'linux' || matrix.target == 'windows' || matrix.target == 'android'
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build
+
+      - name: Compile libwebpdecoder
+        env:
+          TARGET_PLATFORM: ${{ matrix.target }}
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: make build
+        shell: bash
+
+      - name: Compress Build Artifacts
+        run: |
+          mkdir -p staging
+          cp -R out/${{ matrix.target }}/lib staging/
+          cp -R out/${{ matrix.target }}/include staging/
+        shell: bash
+
+      - name: Upload Static Libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: libwebp-tiny-${{ matrix.target }}
+          path: staging/
