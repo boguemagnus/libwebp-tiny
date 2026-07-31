@@ -16,7 +16,7 @@ directly to thumbnail size (~200–300 KB of text vs multi‑MiB FFmpeg).
 src/              libwebp source (shallow clone; not committed)
 scripts/          Build helpers
 out/<platform>/   Install prefix (lib/libwebpdecoder.a, include/webp/)
-.github/workflows GH Actions matrix (linux / windows / macos / ios / android)
+.github/workflows GH Actions matrix (linux / windows / macos / ios / ios-simulator / android)
 ```
 
 ## Quick start (Linux host)

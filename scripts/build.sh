@@ -66,6 +66,16 @@ case "$PLATFORM" in
       -DCMAKE_C_FLAGS="-fembed-bitcode-marker"
     )
     ;;
+  ios-simulator)
+    # arm64 iPhone Simulator (Apple Silicon). Device .a cannot link into sim.
+    SDK_PATH="$(xcrun --sdk iphonesimulator --show-sdk-path)"
+    CMAKE_ARGS+=(
+      -DCMAKE_SYSTEM_NAME=iOS
+      -DCMAKE_OSX_ARCHITECTURES=arm64
+      -DCMAKE_OSX_SYSROOT="$SDK_PATH"
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0
+    )
+    ;;
   android)
     if [[ -z "${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-}}" ]]; then
       echo "ANDROID_NDK_HOME (or ANDROID_NDK_ROOT) required for android builds" >&2

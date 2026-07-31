@@ -19,6 +19,8 @@ jobs:
             os: macos-14
           - target: ios
             os: macos-14
+          - target: ios-simulator
+            os: macos-14
           - target: android
             os: ubuntu-latest
 

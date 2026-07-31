@@ -25,7 +25,7 @@ all: build
 
 help:
 	@echo "  make fetch                  # clone libwebp $(WEBP_TAG) into src/"
-	@echo "  make build [TARGET_PLATFORM=linux|windows|macos|ios|android]"
+	@echo "  make build [TARGET_PLATFORM=linux|windows|macos|ios|ios-simulator|android]"
 	@echo "  WEBP_TAG=$(WEBP_TAG)"
 
 fetch:
