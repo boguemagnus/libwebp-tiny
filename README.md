@@ -16,8 +16,10 @@ directly to thumbnail size (~200–300 KB of text vs multi‑MiB FFmpeg).
 src/              libwebp source (shallow clone; not committed)
 scripts/          Build helpers
 out/<platform>/   Install prefix (lib/libwebpdecoder.a, include/webp/)
-.github/workflows GH Actions matrix (linux / windows / macos / ios / ios-simulator / android)
+.github/workflows GH Actions matrix (linux / windows / macos / macos-x86_64 / ios / ios-simulator / android)
 ```
+
+`macos` is Apple Silicon (arm64). `macos-x86_64` is Intel, cross-compiled on `macos-14` via `CMAKE_OSX_ARCHITECTURES=x86_64`. Vendor into ApoC / C as `external/libwebp/lib/macos/` and `external/libwebp/lib/macos-x86_64/`.
 
 ## Quick start (Linux host)
 
@@ -26,6 +28,7 @@ out/<platform>/   Install prefix (lib/libwebpdecoder.a, include/webp/)
 git clone --depth 1 --branch v1.5.0 https://github.com/webmproject/libwebp.git src
 
 make build                    # → out/linux/
+# On a Mac (or in GH Actions): TARGET_PLATFORM=macos-x86_64 make build
 ```
 
 ## CMake flags

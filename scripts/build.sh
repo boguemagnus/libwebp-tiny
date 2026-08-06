@@ -56,6 +56,13 @@ case "$PLATFORM" in
       -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
     )
     ;;
+  macos-x86_64)
+    # Intel Mac; CMake cross-compiles via OSX_ARCHITECTURES on Apple Silicon hosts.
+    CMAKE_ARGS+=(
+      -DCMAKE_OSX_ARCHITECTURES=x86_64
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+    )
+    ;;
   ios)
     SDK_PATH="$(xcrun --sdk iphoneos --show-sdk-path)"
     CMAKE_ARGS+=(
